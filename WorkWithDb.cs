@@ -3,90 +3,90 @@ using System.Data.SqlClient;
 using System.Windows.Forms;
     internal class WorkWithDb
     {
-        private readonly string СonnectString = ConnectionString.GetConectString();//Объявление переменной, в которой хранится строка подключения к базе данных
+        private readonly string СonnectString = ConnectionString.GetConectString(); 
          
 
 
-        public List<string> GetAllColumnName(string ThisTable)//Метод для получения всех имен столбцов
+        public List<string> GetAllColumnName(string ThisTable) 
         {
             List<string> ColumnName = new List<string>();
 
-            SqlConnection Connect = new SqlConnection(СonnectString);//Подключение к Базе Данных
-            string Query = $"select Column_name from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = '{ThisTable}'";//Новая команда  для БД
+            SqlConnection Connect = new SqlConnection(СonnectString);
+            string Query = $"select Column_name from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = '{ThisTable}'";
             SqlCommand Cmd = new SqlCommand(Query, Connect);
-            Connect.Open();//Открытие подключения
+            Connect.Open();
             SqlDataReader reader = Cmd.ExecuteReader();
-            while (reader.Read())//чтение выполненого SQL запроса
+            while (reader.Read())
             {
-                ColumnName.Add((string)reader.GetValue(0)); // запись в N элемент массива имя столбца
+                ColumnName.Add((string)reader.GetValue(0)); 
              }
-            reader.Close();//Закрытие чтения
-            Connect.Close();//Закрытие подключения
-            return ColumnName;//Возвращение массива со всеми именами столбцов
+            reader.Close();
+            Connect.Close();
+            return ColumnName;
         }
 
 
 
-    public List<string> AllTableNameFromDB()//Метод, для получения названия всех таблиц в базе данных 
+    public List<string> AllTableNameFromDB() 
         {
-            List<string> AllTableName = new List<string>();//Обьявление массива для хранения всех полученных имен, и имеющий размер N
+            List<string> AllTableName = new List<string>(); 
 
-            string Query = "Select TABLE_NAME from INFORMATION_SCHEMA.TABLES";//Новая команда  для БД
+            string Query = "Select TABLE_NAME from INFORMATION_SCHEMA.TABLES"; 
             SqlConnection Conection = new SqlConnection(СonnectString);
             SqlCommand Cmd = new SqlCommand(Query, Conection);
-            Conection.Open();//Открытие подключения
+            Conection.Open();
             SqlDataReader Reader = Cmd.ExecuteReader();
             while (Reader.Read())
             {
-                AllTableName.Add((string)Reader.GetValue(0));// запись в N элемент массива имя столбца
+                AllTableName.Add((string)Reader.GetValue(0));
             }
 
-            Reader.Close();//Закрытие чтения
-            Conection.Close();//Закрытие подключения
+            Reader.Close();
+            Conection.Close();
 
-            return AllTableName;//Возвращение массива со всеми именами таблиц
+            return AllTableName;
         }
 
 
 
-        public void UserQuery(string QueryStr)//Метод выполнения пользовательского запроса в Базу Данных
+        public void UserQuery(string QueryStr)
         {
-            SqlConnection Conn = new SqlConnection(СonnectString);//Подключение к Базе Данных
-            string Query = QueryStr;//Новая команда для БД
+            SqlConnection Conn = new SqlConnection(СonnectString);
+            string Query = QueryStr;
             SqlCommand Cmd = new SqlCommand(Query, Conn);
-            Conn.Open();//Открытие подключения
-            Cmd.ExecuteNonQuery();//Выполнение запроса
-            Conn.Close();//Закрытие подключения
+            Conn.Open();
+            Cmd.ExecuteNonQuery();
+            Conn.Close();
             MessageBox.Show("Запрос выполнен\nвыберите таблицу снова, для отображения результата","Внимание");
         }
         
 
 
-        private bool IsUser(string UserLogin, string UserPass, string ThisTable, string LoginVar = "login", string PassVar = "password")//Метод, для того что бы узнать, существует ли такой пользователь
+        private bool IsUser(string UserLogin, string UserPass, string ThisTable, string LoginVar = "login", string PassVar = "password") 
         {
-            try //Обработчик исключений
+            try  
             {
-                int CountUser = 0;// Счетчик
-                string Query = $"select Count(*) from {ThisTable} where {LoginVar}='{UserLogin}' and {PassVar}='{UserPass}';";//Новая команда для БД
-                SqlConnection Conection = new SqlConnection(СonnectString);//Подключение к Базе Данных
+                int CountUser = 0; 
+                string Query = $"select Count(*) from {ThisTable} where {LoginVar}='{UserLogin}' and {PassVar}='{UserPass}';"; 
+                SqlConnection Conection = new SqlConnection(СonnectString);
                 SqlCommand Cmd = new SqlCommand(Query, Conection);
-                Conection.Open();//Открытие подключения
+                Conection.Open();
                 SqlDataReader Reader = Cmd.ExecuteReader();
                 while (Reader.Read())
                 {
-                    CountUser = (int)Reader.GetValue(0);// Получение количества пользователей с таким логином или паролем
+                    CountUser = (int)Reader.GetValue(0);
                 }
 
-                Reader.Close();//Закрытие чтения
-                Conection.Close();//Закрытие подключения
+                Reader.Close();
+                Conection.Close();
 
-                if (CountUser >= 1)//Если пользователей с таким логином или паролем больше 1
+                if (CountUser >= 1)
                 {
-                    return true;//возвращение true(Такой пользователь существует)
+                    return true;
                 }
-                return false;//возвращение false(Такого пользователя не существует)
+                return false;
             }
-            catch { return false; }//возвращение false(Такого пользователя не существует)
+            catch { return false; }
 
         }
         private int UserInfoCount(string ThisTable)
@@ -101,15 +101,15 @@ using System.Windows.Forms;
             {
                 CountUserInfo = (int)Reader.GetValue(0);
             }
-            Reader.Close();//Закрытие чтения
+            Reader.Close();
             Conection.Close();
             return CountUserInfo;
         }
-        public List<string> UserInfo(string Login, string Pass, string ThisTable = "Auth", string LoginVar = "login", string PassVar = "password")//Метод, для получении информации о пользователе
+        public List<string> UserInfo(string Login, string Pass, string ThisTable = "Auth", string LoginVar = "login", string PassVar = "password")
         {
-            int CountUser = UserInfoCount(ThisTable);// Счетчик
-            List<string> Info = new List<string>();// Обьявление нового списка
-            string Query = $"select * from {ThisTable} where {LoginVar} = N'{Login}' and {PassVar} = N'{Pass}';";//Новая команда для БД
+            int CountUser = UserInfoCount(ThisTable);
+            List<string> Info = new List<string>();
+            string Query = $"select * from {ThisTable} where {LoginVar} = N'{Login}' and {PassVar} = N'{Pass}';";
             SqlConnection Conection = new SqlConnection(СonnectString);
             SqlCommand Cmd = new SqlCommand(Query, Conection);
             Conection.Open();
@@ -121,16 +121,16 @@ using System.Windows.Forms;
                     Info.Add(Reader.GetValue(i).ToString());
                 }
             }
-            Reader.Close();//Закрытие чтения
-            Conection.Close();//Закрытие подключения
-            return Info;// Возвращения списка с информацией о пользователе
+            Reader.Close();
+            Conection.Close();
+            return Info;
         }
 
 
 
 
 
-        public void AuthMethod (Form ThisForm,Form nextForm,string login, string pass, string AuthTableName = "Auth")//Аунтентификация
+        public void AuthMethod (Form ThisForm,Form nextForm,string login, string pass, string AuthTableName = "Auth")
         {
             if (IsUser(login, pass, AuthTableName))
             {

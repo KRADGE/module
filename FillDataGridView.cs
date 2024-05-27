@@ -3,33 +3,33 @@ using System.Data;
 using System.Windows.Forms;
 
 internal class FillDataGridView
-    {
-        private readonly string СonnectString = ConnectionString.GetConectString();//Объявление переменной, в которой хранится строка подключения к базе данных
+{
+        private readonly string СonnectString = ConnectionString.GetConectString();
 
-        public void FillDatGridView(string ThisTable , DataGridView fillDataGrid)//Метод, для заполнения таблицы(DataGridView )
+        public void FillDatGridView(string ThisTable , DataGridView fillDataGrid)
         {
 
-            SqlConnection Connect = new SqlConnection(СonnectString);//Подключение к Базе Данных
-            string Query = $"select * from {ThisTable}";//Новая команда для БД
-            Connect.Open();//Открытие подключения
+            SqlConnection Connect = new SqlConnection(СonnectString);
+            string Query = $"select * from {ThisTable}";
+            Connect.Open();
             SqlCommand Cmd = new SqlCommand(Query, Connect);
             SqlDataAdapter SqlAdapter = new SqlDataAdapter(Cmd);
             DataTable DtRecord = new DataTable();
             SqlAdapter.Fill(DtRecord);
-            Connect.Close();//Закрытие подключения
+            Connect.Close();
             fillDataGrid.DataSource = DtRecord;
         }
 
-        public void UserFillDatGridView(string UserQuery, DataGridView fillDataGrid)//Метод, для заполнения таблицы(DataGridView )
+        public void UserFillDatGridView(string UserQuery, DataGridView fillDataGrid)
         {
-            SqlConnection Connect = new SqlConnection(СonnectString);//Подключение к Базе Данных
-            string Query = UserQuery;//Новая команда для БД
-            Connect.Open();//Открытие подключения
+            SqlConnection Connect = new SqlConnection(СonnectString);
+            string Query = UserQuery;
+            Connect.Open();
             SqlCommand Cmd = new SqlCommand(Query, Connect);
             SqlDataAdapter SqlAdapter = new SqlDataAdapter(Cmd);
             DataTable DtRecord = new DataTable();
             SqlAdapter.Fill(DtRecord);
-            Connect.Close();//Закрытие подключения
+            Connect.Close();
             fillDataGrid.DataSource = DtRecord;
         }
 }

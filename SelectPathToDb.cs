@@ -1,11 +1,11 @@
 ﻿using System.Windows.Forms;
     public class SelectPathToDb
     {
-        public SelectPathToDb( TextBox TxtBox)//Метод для получение пути до файла через OpenFileDialog
+        public SelectPathToDb( TextBox TxtBox)
         {
             string PathToFile = "";
             OpenFileDialog openFile = new OpenFileDialog();
-            openFile.Filter = $"All Files| *.mdf";//Фильтр файлов с расширением '*.mdf'
+            openFile.Filter = $"All Files| *.mdf";
             if (openFile.ShowDialog() == DialogResult.OK)
             {
                 PathToFile = openFile.FileName;
